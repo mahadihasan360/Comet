@@ -31,7 +31,31 @@ class Controller extends BaseController
             return $unique_name = $data;
         }
 
+    }
 
+    /**
+     * make slug
+     */
+    public function makeSlug($title){
+
+        $lowerdata = strtolower($title);
+
+        return str_replace(" ","-",$lowerdata);
 
     }
+
+    /**
+     * array to JSON Convert
+     */
+    public function jsonEncode(array $arr){
+        return json_encode($arr);
+    }
+
+    /**
+     * JSON to array Convert
+     */
+    public function jsonDecode(string $str,$type = false){
+        return json_decode($str,$type);
+    }
+
 }

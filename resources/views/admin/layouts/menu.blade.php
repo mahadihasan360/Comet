@@ -24,8 +24,7 @@
 								<a href="#"><i class="fe fe-document"></i> <span> Users</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a href="{{ route("user.index") }}">All Users</a></li>
-									<li><a href="">Roll</a></li>
-									<li><a href="">Permissions</a></li>
+									<li><a href="{{ route("role.index") }}">Roll</a></li>
 								</ul>
 							</li>
 

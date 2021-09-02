@@ -41,3 +41,8 @@ Route::post("user-profile-update","App\Http\Controllers\Auth\userProfileControll
  * user crud
  */
 Route::resource("user","App\Http\Controllers\userController");
+
+/**
+ * Role crud
+ */
+Route::resource("role","App\Http\Controllers\RoleController");

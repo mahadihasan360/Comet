@@ -1,34 +1,31 @@
 @extends('admin.layouts.app')
+@section("page-name","User Role");
 
 @section('main')
 <div class="content container-fluid">
 					
 	<!-- Page Header -->
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3 class="page-title">Welcome to Users Table</h3>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item active">User Management</li>
-                    </ul>
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="page-title">Welcome User Role</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item active">User Role</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 <!-- /Page Header -->
 
     <div class="row">
         <div class="col-lg-12">
-            <a class="btn btn-info btn-sm" href="#user_modal" data-toggle="modal">Add New User</a><br><br>
-            
-            @if (Session::has("success"))
+            <a class="btn btn-info btn-sm" href="#role_modal" data-toggle="modal">Add New Role</a><br><br>
 
-                <p class="alert alert-success">{{ Session::get("success") }} <button class="close" data-dismiss="alert">&times;</button> </p>
-                
-            @endif
+            @include('validate')
 
             <div class="card">
                 <div class="card-header">
-                    <h4 style="display:inline;margin-right:50px" class="card-title">Users Data</h4>
+                    <h4 style="display:inline;margin-right:50px" class="card-title">Role Data</h4>
                     <a style="margin-right:10px" class="badge badge-primary" href="">Published</a>
                     <a class="badge badge-warning" href="">Trash</a>
                     <form style="float: right;" action="" method="POST" class="form-inline">
@@ -48,13 +45,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Cell</th>
-                                    <th>Role</th>
-                                    <th>Address</th>
-                                    <th>Gender</th>
+                                    <th>Slug</th>
+                                    <th>Permissions</th>
                                     <th>Status</th>
-                                    <th>Photo</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -64,28 +57,24 @@
                                 <tr>
                                     <td>{{ $loop -> index +1 }}</td>
                                     <td>{{ $data -> name }}</td>
-                                    <td>{{ $data -> email }}</td>
-                                    <td>{{ $data -> cell }}</td>
-                                    <td>{{ $data -> role -> name }}</td>
-                                    <td>{{ $data -> address }}</td>
-                                    <td>{{ $data -> gender }}</td>
+                                    <td>{{ $data -> slug }}</td>
+                                    <td>
+
+                                        @if ($data -> permission !== NULL)
+                                            <ul style="list-style: none">
+                                                @foreach (json_decode($data -> permission) as $per)
+                                                   <li> <i class="fa fa-check"></i> &nbsp;{{ $per }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                        
+
+                                    </td>
                                     <td>
                                         <div class="status-toggle">
                                             <input type="checkbox" id="status_1" class="check" checked="">
                                             <label for="status_1" class="checktoggle">checkbox</label>
                                         </div>
-                                    </td>
-                                    <td>
-                                        @if ($data -> photo == NULL && $data -> gender == NULL)
-                                        <img style="width:40px;height:40px" src="admin/assets/img/avatar-3.png" alt=""></td>
-                                        @elseif($data -> photo == NULL && $data -> gender == "Male")
-                                        <img style="width:40px;height:40px" src="admin/assets/img/avatar-1.png" alt=""></td>
-                                        @elseif($data -> photo == NULL && $data -> gender == "Female")
-                                        <img style="width:40px;height:40px" src="admin/assets/img/avatar-2.png" alt=""></td>
-                                        @elseif($data -> photo != NULL)
-                                        <img style="width:40px;height:40px" src="{{ url("") }}/media/users/{{ $data -> photo }}" alt="">
-                                        @endif
-                                        
                                     </td>
 
                                     <td>
@@ -110,40 +99,30 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="user_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="role_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <form action="{{ route("user.store") }}" method="POST">
+        <form action="{{ route("role.store") }}" method="POST">
             @csrf
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Add New Role</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
               <div class="form-group">
-                  <label for="">Name</label>
+                  <label for="">Role Name</label>
                   <input name="name" type="text" class="form-control" placeholder="Name">
               </div>
               <div class="form-group">
-                <label for="">Email</label>
-                <input name="email" type="text" class="form-control" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="">Role</label>
-                <select name="role" class="form-control" id="">
-                    <option value="">-Select-</option>
-                    
-                    @foreach ($roles as $role)
-                         <option value="{{ $role -> id }}">{{ $role -> name }}</option>
-                    @endforeach
-                    
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="">Password</label>
-                <input name="pass" type="text" value="{{ $rand_pass }}" class="form-control" placeholder="password">
+                <label for="">Permissions</label><hr>
+                <input type="checkbox" name="permission[]" id="Admin" value="Admin"> <label for="Admin">Admin</label><br>
+                <input type="checkbox" name="permission[]" id="Editor" value="Editor"> <label for="Editor">Editor</label><br>
+                <input type="checkbox" name="permission[]" id="Author" value="Author"> <label for="Author">Author</label><br>
+                <input type="checkbox" name="permission[]" id="Staff" value="Staff"> <label for="Staff">Staff</label><br>
+                <input type="checkbox" name="permission[]" id="Teacher" value="Teacher"> <label for="Teacher">Teacher</label><br>
+                <input type="checkbox" name="permission[]" id="Student" value="Student"> <label for="Student">Student</label><br>
             </div>
         </div>
         <div class="modal-footer">

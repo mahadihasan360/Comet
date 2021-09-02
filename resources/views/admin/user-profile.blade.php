@@ -41,7 +41,7 @@
 						<small class="text-muted p-t-30 db">Social Profile</small>
 						<br>
 						@if(isset($social -> fb))
-						<button class="btn btn-circle btn-primary mr-2"><i class="fab fa-facebook-f"></i></button>
+						<button class="btn btn-circle btn-primary mr-2"><i class="fab fa-facebook-f"><a href="{{ $social ->fb }}"></a></i></button>
 						@endif
 						@if(isset($social -> tw))
 						<button class="btn btn-circle btn-success mr-2"><i class="fab fa-twitter"></i></button>
@@ -119,25 +119,25 @@
 							<div class="form-group">
 								<label class="col-md-12">Facebook</label>
 								<div class="col-md-12">
-									<input name="fb"  type="text" class="form-control form-control-line">
+									<input name="fb" @if(isset($social -> fb)) value="{{ $social -> fb }}"  @endif  type="text" class="form-control form-control-line">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-12">Twitter</label>
 								<div class="col-md-12">
-									<input name="tw"  type="text" class="form-control form-control-line">
+									<input name="tw" @if(isset($social -> tw)) value="{{ $social -> tw }}"  @endif  type="text" class="form-control form-control-line">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-12">Linkedin</label>
 								<div class="col-md-12">
-									<input name="lin"  type="text" class="form-control form-control-line">
+									<input name="lin" @if(isset($social -> lin)) value="{{ $social -> lin }}"  @endif  type="text" class="form-control form-control-line">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-12">Instagram</label>
 								<div class="col-md-12">
-									<input name="insta"  type="text" class="form-control form-control-line">
+									<input name="insta" @if(isset($social -> insta)) value="{{ $social -> insta }}"  @endif  type="text" class="form-control form-control-line">
 								</div>
 							</div>
 							<div class="form-group">

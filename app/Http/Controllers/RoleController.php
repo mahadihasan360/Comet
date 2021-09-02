@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
-use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-class userController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,18 +15,9 @@ class userController extends Controller
      */
     public function index()
     {
-
-        $pass_rand = str_shuffle("abcdefABCDEF12345~!<>/|\;:^$#@");
-        $password = substr($pass_rand,10,10);
-
-        $role = Role::orderby("name","ASC") -> get();
-
-
-        $data = User::latest() -> get();
-        return view("admin.user.index",[
-            "all_data"   => $data,
-            "rand_pass"  => $password,
-            "roles"  => $role,
+        $data = Role::orderby("name","ASC")->get();
+        return view("admin.user.role.index",[
+            "all_data"    => $data
         ]);
     }
 
@@ -49,25 +39,25 @@ class userController extends Controller
      */
     public function store(Request $request)
     {
-
-        User::create([
-
-            "name"    => $request -> name,
-            "email"    => $request -> email,
-            "role_id"    => $request -> role,
-            "password"    => Hash::make($request -> pass),
-
+        $this -> validate($request,[
+            "name"   => ["required"]
         ]);
-        return back();
+        
+        Role::create([
+            "name"    => $request -> name,
+            "slug"    => $this -> makeSlug($request -> name),
+            "permission"    => $this -> jsonEncode($request -> permission),
+        ]);
+        return back() -> with("success","Role added successfull");
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Role $role)
     {
         //
     }
@@ -75,10 +65,10 @@ class userController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
         //
     }
@@ -87,10 +77,10 @@ class userController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
         //
     }
@@ -98,10 +88,10 @@ class userController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
         //
     }
