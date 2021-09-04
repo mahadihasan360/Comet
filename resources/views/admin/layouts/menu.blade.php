@@ -16,7 +16,7 @@
 									<li><a href="">All Posts</a></li>
 									<li><a href="">Add New Post</a></li>
 									<li><a href="">Category</a></li>
-									<li><a href="">Tags</a></li>
+									<li><a href="{{ route("tag.index") }}">Tags</a></li>
 								</ul>
 							</li>
 

@@ -46,3 +46,9 @@ Route::resource("user","App\Http\Controllers\userController");
  * Role crud
  */
 Route::resource("role","App\Http\Controllers\RoleController");
+
+/**
+ * Tags
+ */
+Route::resource("tag","App\Http\Controllers\TagController");
+Route::get("tag-status/{id}","App\Http\Controllers\TagController@tagStatus") -> name("tag.status");

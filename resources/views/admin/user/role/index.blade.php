@@ -47,6 +47,7 @@
                                     <th>Name</th>
                                     <th>Slug</th>
                                     <th>Permissions</th>
+                                    <th>User List</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -69,6 +70,13 @@
                                         @endif
                                         
 
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach ($data -> users as $user)
+                                                <li>@if(isset($user -> name)) {{ $user -> name }}  @endif</li>
+                                            @endforeach
+                                        </ul>
                                     </td>
                                     <td>
                                         <div class="status-toggle">

@@ -66,7 +66,7 @@
                                     <td>{{ $data -> name }}</td>
                                     <td>{{ $data -> email }}</td>
                                     <td>{{ $data -> cell }}</td>
-                                    <td>{{ $data -> role -> name }}</td>
+                                    <td>@if(isset($data -> role -> name)) {{ $data -> role -> name }}  @endif</td>
                                     <td>{{ $data -> address }}</td>
                                     <td>{{ $data -> gender }}</td>
                                     <td>
