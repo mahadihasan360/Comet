@@ -48,7 +48,19 @@ Route::resource("user","App\Http\Controllers\userController");
 Route::resource("role","App\Http\Controllers\RoleController");
 
 /**
- * Tags
+ * Tags routes
  */
 Route::resource("tag","App\Http\Controllers\TagController");
 Route::get("tag-status/{id}","App\Http\Controllers\TagController@tagStatus") -> name("tag.status");
+
+/**
+ * Category routes
+ */
+Route::resource("category","App\Http\Controllers\CategoryController");
+Route::get("category-status/{id}","App\Http\Controllers\CategoryController@catStatus") -> name("cat.status");
+
+/**
+ * Post routes
+ */
+Route::resource("post","App\Http\Controllers\PostController");
+Route::get("post-status/{id}","App\Http\Controllers\PostController@postStatus") -> name("post.status");

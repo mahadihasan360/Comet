@@ -13,9 +13,9 @@
 							<li class="submenu">
 								<a href="#"><i class="fe fe-document"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="">All Posts</a></li>
-									<li><a href="">Add New Post</a></li>
-									<li><a href="">Category</a></li>
+									<li><a href="{{ route("post.index") }}">All Posts</a></li>
+									<li><a href="{{ route("post.create") }}">Add New Post</a></li>
+									<li><a href="{{ route("category.index") }}">Category</a></li>
 									<li><a href="{{ route("tag.index") }}">Tags</a></li>
 								</ul>
 							</li>
