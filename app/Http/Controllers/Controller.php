@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use phpDocumentor\Reflection\Types\Null_;
 
 class Controller extends BaseController
 {
@@ -15,10 +16,10 @@ class Controller extends BaseController
     /**
      * Photo Update System
      */
-    public function fileUpload($request,$path,$data){
+    public function fileUpload($request,$field_name,$path,$data=NULL){
 
-        if($request->hasFile("photo")){
-            $file = $request -> file("photo");
+        if($request->hasFile($field_name)){
+            $file = $request -> file($field_name);
             $unique_name = md5(time().rand()) . "." . $file ->getClientOriginalExtension();
             $file -> move(public_path($path),$unique_name);
 

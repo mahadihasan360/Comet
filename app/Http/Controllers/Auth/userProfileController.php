@@ -29,7 +29,7 @@ class userProfileController extends Controller
         // get user data
         $user_data = User::find(Auth::user()->id);
 
-        $unique_name = $this -> fileUpload($request,"media/users/",$user_data -> photo);
+        $unique_name = $this -> fileUpload($request,"photo","media/users/",$user_data -> photo);
 
         // social profile manage
 

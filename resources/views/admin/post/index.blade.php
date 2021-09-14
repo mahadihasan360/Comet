@@ -33,8 +33,9 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Slug</th>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Time</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -44,8 +45,15 @@
                                 @forelse ($all_data as $data)
                                 <tr>
                                     <td>{{ $loop -> index +1 }}</td>
-                                    <td>{{ $data -> name }}</td>
-                                    <td>{{ $data -> slug }}</td>
+                                    <td>{{ Str::of($data -> title) -> limit(20) }}</td>
+                                    <td>
+                                        @php
+                                            $featured = json_decode($data -> featured);
+                                            echo $featured -> post_type;
+                                        @endphp
+                                    </td>
+                                    <td>{{ $data -> created_at -> diffForHumans() }}</td>
+                                    {{-- <td>{{ date("M - d - Y", Strtotime($data -> created_at)) }}</td> --}}
                                     <td>
                                         <div>
                                             @if ($data -> status == true)
