@@ -30,7 +30,7 @@
             }else if(type == "Video"){
                 $(".post_type_area").html(`<div class="form-group">
                 <label>Video URL</label>
-                <input name="vedio" type="text" class="form-control" placeholder="Link">
+                <input name="video" type="text" class="form-control" placeholder="Link">
             </div>`);
             }else if(type == "Audio"){
                 $(".post_type_area").html(`<div class="form-group">

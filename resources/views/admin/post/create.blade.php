@@ -76,7 +76,7 @@
 						<hr>
 						<select class="post_tags form-control" name="ptag[]" multiple="multiple">
 							@forelse ($tags as $tag)
-							<option value="">{{ $tag -> name }}</option>
+							<option value="{{ $tag -> id }}">{{ $tag -> name }}</option>
 							@empty
 							<li class="text-danger text-center">No Categories Found</li>
 							@endforelse

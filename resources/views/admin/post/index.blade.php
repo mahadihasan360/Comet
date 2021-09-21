@@ -70,8 +70,12 @@
                                         @else
                                         <a class="btn btn-info btn-sm" href="{{ route("cat.status",$data -> id) }}"><i class="fas fa-eye-slash"></i></a>
                                         @endif
-                                        <a class="btn btn-warning btn-sm" href=""><i class="fas fa-edit"></i></a>
-                                        <a class="btn btn-danger btn-sm" href=""><i class="fas fa-trash"></i></a>
+                                        <a class="btn btn-warning btn-sm" href="{{ route("post.edit",$data -> id) }}"><i class="fas fa-edit"></i></a>
+                                        <form class="d-inline" action="{{ route("post.destroy",$data -> id) }}" method="POST">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                        </form>
                                     </td>
 
                                 </tr>

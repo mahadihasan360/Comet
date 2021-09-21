@@ -47,6 +47,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
 
+        // validation
         $this -> validate($request,[
             "title"    => ["required"]
         ]);
@@ -69,22 +70,34 @@ class PostController extends Controller
             }
         }
 
+        // Video post upload
+        $video_regular_link = $request -> video;
+        $convert_embed_link = str_replace("watch?v=","embed/",$video_regular_link);
+
+
+
         $post_type_arr = [
             "post_type"        => $request -> post_type,
             "post_image"       => $file_name,
             "post_gallery"     => $gallery,
-            "post_video"       => $request -> video,
+            "post_video"       => $convert_embed_link,
             "post_audio"       => $request -> audio,
             "post_quote"       => $request -> quote,
         ];
 
-        Post::create([
+        // Data Send
+        $post = Post::create([
             "title"  => $request -> title,
             "slug"  => $this -> makeSlug($request -> title),
             "user_id"  => Auth :: user() -> id,
             "content"  => $request -> content,
             "featured"  => json_encode($post_type_arr),
         ]);
+
+        // Relationship
+        $post -> categories() -> attach($request -> pcat);
+        $post -> tags() -> attach($request -> ptag);
+
         return redirect() -> route("post.index") -> with("success","Post Added Sussessfull");
     }
 
@@ -105,9 +118,31 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit($id)
     {
-        //
+        $tags = Tag::where("status",true)->get();
+        $cats = Category::where("status",true)->get();
+        $post = Post::find($id);
+
+        // post category set
+        $cat_arr = [];
+        foreach($post -> categories as $cat){
+            array_push($cat_arr,$cat -> id);
+        }
+
+        // post tag set
+        $tag_arr = [];
+        foreach($post -> tags as $tag){
+            array_push($tag_arr,$tag -> id);
+        }
+        
+        return view("admin.post.edit",[
+            "tags"      => $tags,
+            "cats"      => $cats,
+            "post"      => $post,
+            "cat_arr"   => $cat_arr,
+            "tag_arr"   => $tag_arr,
+        ]);
     }
 
     /**
@@ -117,9 +152,9 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, $id)
     {
-        //
+        return $request -> all();
     }
 
     /**
@@ -128,8 +163,13 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        $post -> categories() -> detach($post -> categories);
+        $post -> tags() -> detach($post -> tags);
+        $post -> delete();
+
+        return redirect() -> route("post.index") -> with("success","Post Deleted Successfull!");
     }
 }

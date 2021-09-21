@@ -1,103 +1,92 @@
 @extends('admin.layouts.app')
-
+@section("page-name","Blog Post Edit");
 @section('main')
 <div class="content container-fluid">
 					
-	<!-- Page Header -->
-	<div class="page-header">
-		<div class="row">
-			<div class="col-sm-12">
-				<h3 class="page-title">Welcome Admin!</h3>
-				<ul class="breadcrumb">
-					<li class="breadcrumb-item active">Dashboard</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<!-- /Page Header -->
+	@include('page-header')
 
-	<div class="row">
-		<div class="col-xl-6 d-flex m-auto">
-			<div class="card flex-fill">
-				<div class="card-header">
-					<h4 class="card-title">Edit Staff Data - {{ $data -> name }}</h4>
-				</div>
-				<div class="card-body">
-					<form action="{{ route("staff.update",$data -> id) }}" method="POST" enctype="multipart/form-data">
-						@csrf
-						@method("PUT")
-						<div class="form-group row">
-							<label class="col-lg-3 col-form-label">Name</label>
-							<div class="col-lg-9">
-								<input name="name" value="{{ $data -> name }}" type="text" class="form-control">
+	<form action="{{ route("post.update",$post -> id) }}" method="POST" enctype="multipart/form-data">
+	@csrf
+	@method("PUT")
+		<div class="row">
+			<div class="col-xl-9 d-flex">
+				<div class="card flex-fill">
+					<div class="card-header">
+						<h4 class="card-title">Edit Post</h4>
+					</div>
+					{{-- alert message --}}
+					@if (Session::has("success"))
+
+					<p class="alert alert-success">{{ Session::get("success") }} <button class="close" data-dismiss="alert">&times;</button> </p>
+					
+					@endif
+					{{-- error message --}}
+					@if ($errors -> any())
+						<p class="alert alert-danger">{{ $errors -> first() }} <button class="close" data-dismiss="alert">&times;</button> </p>
+					@endif
+
+
+					<div class="card-body">
+							<div class="form-group">
+								<label>Title</label>
+								<input name="title" value="{{ $post -> title }}" type="text" class="form-control">
 							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-lg-3 col-form-label">Email</label>
-							<div class="col-lg-9">
-								<input name="email" value="{{ $data -> email }}" type="text" class="form-control">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-lg-3 col-form-label">Cell</label>
-							<div class="col-lg-9">
-								<input name="cell" value="{{ $data -> cell }}" type="text" class="form-control">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-lg-3 col-form-label">Location</label>
-							<div class="col-lg-9">
-								<select name="location" class="form-control">
-									<option @if($data -> location == "" ) @endif value="">Select</option>
-									<option @if($data -> location == "Mirpur" ) selected @endif value="Mirpur">Mirpur</option>
-									<option @if($data -> location == "Uttara" ) selected @endif value="Uttara">Uttara</option>
-									<option @if($data -> location == "Dhanmondi" ) selected @endif value="Dhanmondi">Dhanmondi</option>
-									<option @if($data -> location == "Badda" ) selected @endif value="Badda">Badda</option>
-									<option @if($data -> location == "Gulshan" ) selected @endif value="Gulshan">Gulshan</option>
+							<div class="form-group">
+								<label>Post Type</label>
+								<select class="form-control" name="post_type" id="post_type">
+									<option value="">-Select-</option>
+									<option value="Standard">Standard</option>
+									<option value="Gallery">Gallery</option>
+									<option value="Video">Video</option>
+									<option value="Audio">Audio</option>
+									<option value="Quote">Quote</option>
 								</select>
 							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-lg-3 col-form-label">Gender</label>
-							<div class="col-lg-9">
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" @if($data -> gender == "Male") checked @endif type="radio" name="gender" id="gender_male" value="Male" checked="">
-									<label class="form-check-label" for="gender_male">
-									Male
-									</label>
-								</div>
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" @if($data -> gender == "Female") checked @endif type="radio" name="gender" id="gender_female" value="Female">
-									<label class="form-check-label" for="gender_female">
-									Female
-									</label>
-								</div>
+							<div class="post_type_area">
+
 							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-lg-3 col-form-label"></label>
-							<div class="col-lg-6">
-								<input name="old_photo" type="hidden" value="{{ $data -> photo }}">
-								<img style="width:100px" src="{{ url("/") }}/media/staff/{{ $data -> photo }}" alt="">
+							<div class="form-group">
+								<label for="">Content</label>
+								<textarea id="post_editor" name="content" id="" class="form-control">{{ $post -> content }}</textarea>
 							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-lg-3 col-form-label">Photo</label>
-							<div class="col-lg-9">
-								<input name="new_photo" type="file" class="form-control">
+							
+							<div class="text-right">
+								<button type="submit" class="btn btn-primary">Submit</button>
 							</div>
-						</div>
-						<div class="text-left">
-							<a style="float: left" class="btn btn-warning" href="{{ route("staff.index") }}">Back</a>
-						</div>
-						<div class="text-right">
-							<button type="submit" class="btn btn-primary">Update</button>
-						</div>
-					</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 d-flex">
+				<div class="card flex-fill">
+					<div class="card-header">
+						<h4 class="card-title">Category & Tags</h4>
+					</div>
+
+
+					<div class="card-body">
+						<h6>Select Categories</h6>
+						<hr>
+						<ul style="list-style: none;padding:0">
+							@forelse ($cats as $cat)
+								<li><input name="pcat[]"  @if(in_array($cat -> id,$cat_arr)) checked @endif  type="checkbox" value="{{ $cat -> id }}" id="{{ $cat -> name }}"> <label for="{{ $cat -> name }}">{{ $cat -> name }}</label> </li>
+							@empty
+								<li class="text-danger text-center">No Categories Found</li>
+							@endforelse
+						</ul>
+						<h6>Select Tags</h6>
+						<hr>
+						<select class="post_tags form-control" name="ptag[]" multiple="multiple">
+							@forelse ($tags as $tag)
+							<option  @if(in_array($tag -> id,$tag_arr)) selected @endif  value="{{ $tag -> id }}">{{ $tag -> name }}</option>
+							@empty
+							<li class="text-danger text-center">No Categories Found</li>
+							@endforelse
+						</select>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</form>
 	
 </div>
 @endsection
